@@ -15,7 +15,7 @@ func (e *ErrorWriter) Write(b []byte) (int, error) {
 
 func TestGenerateQRCodeGeneratesPNG(t *testing.T) {
 	w := new(ErrorWriter)
-	err := GenerateQRCode(w, "555-2368")
+	err := GenerateQRCode(w, "555-2368", Version(1))
 
 	if err == nil || err.Error() != "Expected error" {
 		t.Errorf("Generated QRCode is not a PNG: %s", err)
