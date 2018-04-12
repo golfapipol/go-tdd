@@ -23,11 +23,25 @@ func TestGenerateQRCodeGeneratesPNG(t *testing.T) {
 }
 
 func TestVersionDeterminesSize(t *testing.T) {
-	buffer := new(bytes.Buffer)
-	GenerateQRCode(buffer, "555-2368", Version(1))
-
-	img, _ := png.Decode(buffer)
-	if width := img.Bounds().Dx(); width != 21 {
-		t.Errorf("Version 1, expected 21 but go %d", width)
+	table := []struct {
+		version  int
+		expected int
+	}{
+		{1, 21},
+		{2, 25},
+		{6, 41},
+		{7, 45},
+		{14, 73},
+		{40, 177},
 	}
+	for _, test := range table {
+		buffer := new(bytes.Buffer)
+		GenerateQRCode(buffer, "555-2368", Version(test.version))
+
+		img, _ := png.Decode(buffer)
+		if width := img.Bounds().Dx(); width != 21 {
+			t.Errorf("Version %2d, expected %3d but go %3d", test.version, test.expected, width)
+		}
+	}
+
 }
