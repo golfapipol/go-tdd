@@ -9,8 +9,12 @@ import (
 	"os"
 )
 
+func DeriveSizeFromVersion(version Version) int {
+	return 4*int(version) + 17
+}
+
 func GenerateQRCode(w io.Writer, code string, version Version) error {
-	size := 4*int(version) + 17
+	size := DeriveSizeFromVersion(version)
 	img := image.NewNRGBA(image.Rect(0, 0, size, size))
 	return png.Encode(w, img)
 }
