@@ -39,7 +39,7 @@ func TestVersionDeterminesSize(t *testing.T) {
 		GenerateQRCode(buffer, "555-2368", Version(test.version))
 
 		img, _ := png.Decode(buffer)
-		if width := img.Bounds().Dx(); width != 21 {
+		if width := img.Bounds().Dx(); width != test.expected {
 			t.Errorf("Version %2d, expected %3d but go %3d", test.version, test.expected, width)
 		}
 	}
