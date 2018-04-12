@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"errors"
+	"image/png"
 	"testing"
 )
 
@@ -17,5 +19,15 @@ func TestGenerateQRCodeGeneratesPNG(t *testing.T) {
 
 	if err == nil || err.Error() != "Expected error" {
 		t.Errorf("Generated QRCode is not a PNG: %s", err)
+	}
+}
+
+func TestVersionDeterminesSize(t *testing.T) {
+	buffer := new(bytes.Buffer)
+	GenerateQRCode(buffer, "555-2368", Version(1))
+
+	img, _ := png.Decode(buffer)
+	if width := img.Bounds().Dx(); width != 21 {
+		t.Errorf("Version 1, expected 21 but go %d", width)
 	}
 }
